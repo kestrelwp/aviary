@@ -153,7 +153,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$postInstall     = str_replace( '%%destination%%', $destination, $postInstall );
 		$postInstall     = str_replace( '%%cwd%%', getcwd(), $postInstall );
 		$postInstall     = str_replace( '%%composer_lock%%', $this->composerLockFile, $postInstall );
-		$postInstall     = str_replace( '%%deps%%', $this->folder, $postInstall );
+		$postInstall     = str_replace( '%%vendor_prefixed%%', $this->folder, $postInstall );
 		$postInstall     = str_replace( '%%temp%%', $this->tempDir, $postInstall );
 		$postInstall     = str_replace( '%%prefix%%', $this->prefix, $postInstall );
 		$postInstallPath = $this->path( $this->tempDir, 'postinstall.php' );
