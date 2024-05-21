@@ -18,15 +18,15 @@ function resolve( Node $node ): array {
 	return match (true) {
 
 		$node instanceof Node\Stmt\Namespace_ =>
-			['expose-namespaces' => join('\\', $node->name->getParts())],
+			['exclude-namespaces' => join('\\', $node->name->getParts())],
 
 		$node instanceof Node\Stmt\Class_,
 		$node instanceof Node\Stmt\Trait_,
 		$node instanceof Node\Stmt\Interface_ =>
-			['expose-classes' => [$node->name->name]],
+			['exclude-classes' => [$node->name->name]],
 
 		$node instanceof Node\Stmt\Function_ =>
-			['expose-functions' => [$node->name->name]],
+			['exclude-functions' => [$node->name->name]],
 
 		$node instanceof Node\Stmt\If_ =>
 			resolve_if_node($node),
@@ -34,7 +34,7 @@ function resolve( Node $node ): array {
 		$node instanceof Node\Stmt\Expression &&
 		$node->expr instanceof Node\Expr\FuncCall &&
 		in_array('define', $node->expr->name->getParts()) =>
-			['expose-constants' => [$node->expr->args[0]->value->value]],
+			['exclude-constants' => [$node->expr->args[0]->value->value]],
 
 		default => []
 	};
