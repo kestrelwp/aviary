@@ -51,7 +51,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$prefix         = '';
 
 		$config   = [
-			'folder'       => $this->path( getcwd(), 'prefixed' ),
+			'folder'       => $this->path( getcwd(), 'vendor-prefixed' ),
 			'temp'         => $this->path( getcwd(), 'tmp-' . substr( str_shuffle( md5( microtime() ) ), 0, 10 ) ),
 			'prefix'       => $prefix,
 			'globals'      => [ 'wordpress', 'woocommerce', 'action-scheduler' ],
