@@ -170,6 +170,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$scriptName = ScriptEvents::POST_INSTALL_CMD;
 		}
 
+		// TODO: consider maintaining our own php-scoper.phar file, similar to https://github.com/wpify/php-scoper
 		$phpScoperPath = realpath( __DIR__ . '/../../php-scoper/bin/php-scoper.phar' );
 
 		$composerJson->scripts->{$scriptName} = [
@@ -253,7 +254,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 	private function createPath( array $parts, bool $in_root = false ): string {
 
-		$vendor = strpos( dirname( __DIR__ ), 'vendor' . DIRECTORY_SEPARATOR . 'wpify' . DIRECTORY_SEPARATOR . 'scoper' );
+		$vendor = strpos( dirname( __DIR__ ), 'vendor' . DIRECTORY_SEPARATOR . 'kestrelwp' . DIRECTORY_SEPARATOR . 'aviary' );
 
 		if ( ! $in_root || ! is_int( $vendor ) ) {
 			return dirname( __DIR__ ) . DIRECTORY_SEPARATOR . join( DIRECTORY_SEPARATOR, $parts );
@@ -283,12 +284,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 		return $application->run(
 			new ArrayInput(
-				array(
+				[
 					'command'               => $command,
 					'--working-dir'         => $path,
 					'--no-dev'              => ! $useDevDependencies,
 					'--optimize-autoloader' => true,
-				),
+				],
 			),
 			$output,
 		);

@@ -52,3 +52,5 @@ rename( path( $destination, 'vendor' ), $deps );
 
 // remove temp folder
 remove( $temp );
+
+// TODO: combine all autoload files
