@@ -4,6 +4,11 @@ function remove( string $src ): void {
 		return;
 	}
 
+	if (is_file($src)) {
+		unlink($src);
+		return;
+	}
+
 	$files = new RecursiveIteratorIterator(
 		new RecursiveDirectoryIterator($src, FilesystemIterator::SKIP_DOTS),
 		RecursiveIteratorIterator::CHILD_FIRST
