@@ -48,7 +48,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$this->composer = $composer;
 		$this->io       = $io;
 		$extra          = $composer->getPackage()->getExtra();
-		$prefix         = null;
+		$prefix         = '';
 
 		$config   = [
 			'folder'       => $this->path( getcwd(), 'prefixed' ),
