@@ -171,7 +171,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		}
 
 		// TODO: consider maintaining our own php-scoper.phar file, similar to https://github.com/wpify/php-scoper
-		$phpScoperPath = realpath( __DIR__ . '/../../php-scoper/bin/php-scoper.phar' );
+		$phpScoperPath = realpath( __DIR__ . '/../../../wpify/php-scoper/bin/php-scoper.phar' );
 
 		$composerJson->scripts->{$scriptName} = [
 			$phpScoperPath . ' add-prefix --output-dir="' . $destination . '" --force --config="' . $phpScoperConfig . '"',
