@@ -70,9 +70,7 @@ that. It has an up-to-date database of all WordPress and WooCommerce symbols tha
 
 ```php
 <?php
-require_once __DIR__ . '/vendor-prefixed/scoper-autoload.php';
-require_once __DIR__ . '/vendor-prefixed/autoload.php';
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor-prefixed/aviary-autoload.php';
 
 new \MyNamespaceForDeps\Example\Dependency();
 ```
@@ -81,7 +79,7 @@ new \MyNamespaceForDeps\Example\Dependency();
 
 ### Deployment with Gitlab CI
 
-To use WPify Scoper with Gitlab CI, you can add the following job to your `.gitlab-ci.yml` file:
+To use Aviary with Gitlab CI, you can add the following job to your `.gitlab-ci.yml` file:
 
 ```yaml
 composer:
@@ -101,7 +99,7 @@ composer:
 
 ### Deployment with Github Actions
 
-To use WPify Scoper with Github Actions, you can add the following action:
+To use Aviary with Github Actions, you can add the following action:
 
 ```yaml
 name: Build vendor
