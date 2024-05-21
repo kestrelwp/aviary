@@ -247,7 +247,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 		copy( $inc_path, $this->path( $path, 'scoper.inc.php' ) );
 
-		file_put_contents( $this->path( $path, 'scoper.config.php' ), '<?php return ' . var_export( $config, true ) . ';' );
+		file_put_contents( $this->path( $path, 'aviary.config.php' ), '<?php return ' . var_export( $config, true ) . ';' );
 
 		return $final_path;
 	}
