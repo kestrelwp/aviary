@@ -58,12 +58,11 @@ rename( path( $destination, 'vendor' ), $vendor_prefixed );
 // remove temp folder
 remove( $temp );
 
-// TODO: combine all autoload files
-
+// create a combined autoloader
 $combined_autoloader = <<<PHP
 <?php
 
-require_once __DIR__ . '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/scoper-autoload.php';
 
 PHP;
