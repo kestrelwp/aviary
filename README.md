@@ -72,7 +72,7 @@ composer global update kestrelwp/aviary
   },
   "extra": {
     "aviary": {
-      "prefix": "MyNamespaceForDeps",
+      "prefix": "MyPrefixForDependencies",
       "folder": "vendor-prefixed",
       "globals": [
         "wordpress",
@@ -88,13 +88,12 @@ composer global update kestrelwp/aviary
 
 6. Option `autorun` defaults to `true` so that scoping is run automatically upon composer `update` or `install` command.
    That is not what you want in all cases, so you can set it `false` if you need.
-   To start prefixing manually, you need to add for example the line `"aviary": "aviary"` to the "scripts" section of your composer.json. 
+   To start prefixing manually, you need to add for example the line `"aviary": "aviary"` to the `"scripts"` section of your `composer.json`. 
    You then run the script with the command `composer aviary install` or `composer aviary update`.
 
-7. Scoped dependencies will be in `vendor-prefixed` folder of your project. You must include the scoped autoload alongside with the
-   composer autoloader.
+7. Scoped dependencies will be in `vendor-prefixed` folder of your project. There's no need to include multiple autoloaders - `aviary` provides a single `aviary-autload.php` file which loads all the required autoload files for both prefixed and non-prefixed dependencies.
 
-8. After that, you can use your dependencies with the namespace.
+8. After that, you can simply use dependencies with the prefixed namespace in your code.
 
 **Example PHP file:**
 
@@ -102,7 +101,7 @@ composer global update kestrelwp/aviary
 <?php
 require_once __DIR__ . '/vendor-prefixed/aviary-autoload.php';
 
-new \MyNamespaceForDeps\Example\Dependency();
+new \MyPrefixForDependencies\Example\Dependency();
 ```
 
 ## Deployment
@@ -127,9 +126,9 @@ composer:
     - composer install --prefer-dist --optimize-autoloader --no-ansi --no-interaction --no-dev
 ```
 
-### Deployment with Github Actions
+### Deployment with GitHub Actions
 
-To use Aviary with Github Actions, you can add the following action:
+To use Aviary with GitHub Actions, you can add the following action:
 
 ```yaml
 name: Build vendor
