@@ -18,13 +18,19 @@ that. It has an up-to-date database of all WordPress and WooCommerce symbols tha
 
 ## Installation
 
-At the moment, `aviary` should be installed globally. Until/if we can package this, and until we tag a release, you will
+At the moment, `aviary` **should be installed globally**. This is because Aviary uses the latest version of PHP Scoper,
+which requires PHP 8.1+, whereas our plugins need to support PHP 7.4. Installing Aviary globally allows us to avoid any
+package & PHP version conflicts during `composer install`.
+
+### Global composer.json
+
+Until/if we can package this, and until we tag a release, you will
 need to edit your global `/Users/{yourname}/.composer/composer.json` as follows:
 
 ```json
 {
    "require": {
-      "kestrelwp/aviary": "dev-main",
+      "kestrelwp/aviary": "dev-main"
    },
    "config": {
       "allow-plugins": {
@@ -39,6 +45,8 @@ need to edit your global `/Users/{yourname}/.composer/composer.json` as follows:
    ]
 }
 ```
+
+Then, run `composer global install`.
 
 **Updating** aviary to latest version is then as simple as:
 
