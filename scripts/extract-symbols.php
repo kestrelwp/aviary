@@ -15,6 +15,30 @@ function get_parser(): Parser {
 
 function resolve( Node $node ): array {
 
+	// Special handling for WC constants, as these are defined using a method call, instead of calling `\define` directly
+	if ( $node instanceof Node\Stmt\Class_ && $node->name->name === 'WooCommerce' ) {
+		$result = ['exclude-classes' => [$node->name->name]];
+
+		foreach ( $node->stmts as $stmt ) {
+			if ( $stmt instanceof Node\Stmt\ClassMethod && $stmt->name->name === 'define_constants' ) {
+
+				$constants = [];
+
+				foreach( $stmt->stmts as $subStmt ) {
+					if ( $subStmt instanceof Node\Stmt\Expression && $subStmt->expr instanceof Node\Expr\MethodCall && $subStmt->expr->name->name === 'define' ) {
+						$constants[] = $subStmt->expr->args[0]->value->value;
+					}
+				}
+
+				$result['exclude-constants'] = $constants;
+
+				break;
+			}
+		}
+
+		return $result;
+	}
+
 	return match (true) {
 
 		$node instanceof Node\Stmt\Namespace_ =>

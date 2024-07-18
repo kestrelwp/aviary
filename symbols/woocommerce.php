@@ -2,6 +2,21 @@
   'exclude-constants' => 
   array (
     0 => 'WC_PLUGIN_FILE',
+    1 => 'WC_ABSPATH',
+    2 => 'WC_PLUGIN_BASENAME',
+    3 => 'WC_VERSION',
+    4 => 'WOOCOMMERCE_VERSION',
+    5 => 'WC_ROUNDING_PRECISION',
+    6 => 'WC_DISCOUNT_ROUNDING_MODE',
+    7 => 'WC_TAX_ROUNDING_MODE',
+    8 => 'WC_DELIMITER',
+    9 => 'WC_SESSION_CACHE_GROUP',
+    10 => 'WC_TEMPLATE_DEBUG_MODE',
+    11 => 'WC_LOG_DIR',
+    12 => 'WC_NOTICE_MIN_PHP_VERSION',
+    13 => 'WC_NOTICE_MIN_WP_VERSION',
+    14 => 'WC_PHP_MIN_REQUIREMENTS_NOTICE',
+    15 => 'WC_SSR_PLUGIN_UPDATE_RELEASE_VERSION_TYPE',
   ),
   'exclude-functions' => 
   array (
