@@ -60,6 +60,9 @@ function resolve( Node $node ): array {
 		in_array('define', $node->expr->name->getParts()) =>
 			['exclude-constants' => [$node->expr->args[0]->value->value]],
 
+		$node instanceof Node\Stmt\Const_ =>
+			['exclude-constants' => [$node->consts[0]->name->name]],
+
 		default => []
 	};
 }
