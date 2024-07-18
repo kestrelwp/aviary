@@ -148,6 +148,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$composerJson->scripts = (object) [];
 		}
 
+		// copy stubs/aviary-autoload.stub into the temp folder rename to aviary-autoload.php
+		copy( $this->path( __DIR__, '..', 'stubs', 'aviary-autoload.stub' ), $this->path( $this->tempDir, 'aviary-autoload.php' ) );
+
 		$postInstall     = file_get_contents( __DIR__ . '/../scripts/postinstall.php' );
 		$postInstall     = str_replace( '%%source%%', $source, $postInstall );
 		$postInstall     = str_replace( '%%destination%%', $destination, $postInstall );

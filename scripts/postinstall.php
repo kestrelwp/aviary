@@ -55,8 +55,9 @@ copy( path( $destination, 'composer.lock' ), path( $cwd, $composer_lock ) );
 remove( $vendor_prefixed );
 rename( path( $destination, 'vendor' ), $vendor_prefixed );
 
+// copy aviary-autoload.php into vendor-prefixed folder
+copy( path( __DIR__, 'aviary-autoload.php' ), path( $vendor_prefixed, 'aviary-autoload.php' ) );
+
 // remove temp folder
 remove( $temp );
 
-// copy stubs/aviary-autoload.stub into vendor-prefixed folder and rename to aviary-autoload.php
-copy( path( __DIR__, '..', 'stubs', 'aviary-autoload.stub' ), path( $vendor_prefixed, 'aviary-autoload.php' ) );
