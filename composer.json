@@ -22,17 +22,17 @@
     }
   ],
   "require": {
-    "php": "^8.1",
+    "php": "^8.2",
     "composer-plugin-api": "^2.3",
-    "composer/composer": "^2.7.4",
+    "composer/composer": "^2.7.6",
     "wpify/php-scoper": "^0.18.11"
   },
   "require-dev": {
-    "jetbrains/phpstorm-stubs": "^v2023.3",
-    "johnpbloch/wordpress": "^6.5.2",
+    "jetbrains/phpstorm-stubs": "^v2024.1",
+    "johnpbloch/wordpress": "^6.6.0",
     "nikic/php-parser": "^v4.19.1",
-    "woocommerce/action-scheduler": "^3.7.4",
-    "wpackagist-plugin/woocommerce": "^8.9.0"
+    "woocommerce/action-scheduler": "^3.8.1",
+    "wpackagist-plugin/woocommerce": "^9.1.2"
   },
   "extra": {
     "class": "Kestrel\\Aviary\\Plugin",
