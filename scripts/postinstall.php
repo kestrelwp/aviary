@@ -28,13 +28,13 @@ function path( ...$parts ): string {
 }
 
 // define variables - these placeholders are replaced in Plugin.php with actual values from the config
-$source          = '%%source%%';
-$destination     = '%%destination%%';
-$cwd             = '%%cwd%%';
-$composer_lock   = '%%composer_lock%%';
-$vendor_prefixed = '%%vendor_prefixed%%';
-$temp            = '%%temp%%';
-$prefix          = strtolower( preg_replace( "/[[a-zA-Z0-9]+]/", '', '%%prefix%%' ) );
+$source        = '%%source%%';
+$destination   = '%%destination%%';
+$cwd           = '%%cwd%%';
+$composer_lock = '%%composer_lock%%';
+$vendor_scoped = '%%vendor_scoped%%';
+$temp          = '%%temp%%';
+$prefix        = strtolower( preg_replace( "/[[a-zA-Z0-9]+]/", '', '%%prefix%%' ) );
 
 // fix static files autoloader
 $autoload_static_path = path( $destination, 'vendor', 'composer', 'autoload_static.php' );
@@ -52,12 +52,11 @@ remove( path( $cwd, $composer_lock ) );
 copy( path( $destination, 'composer.lock' ), path( $cwd, $composer_lock ) );
 
 // copy vendor-prefixed folder
-remove( $vendor_prefixed );
-rename( path( $destination, 'vendor' ), $vendor_prefixed );
+remove( $vendor_scoped );
+rename( path( $destination, 'vendor' ), $vendor_scoped );
 
 // copy aviary-autoload.php into vendor-prefixed folder
-copy( path( __DIR__, 'aviary-autoload.php' ), path( $vendor_prefixed, 'aviary-autoload.php' ) );
+copy( path( __DIR__, 'aviary-autoload.php' ), path( $vendor_scoped, 'aviary-autoload.php' ) );
 
 // remove temp folder
 remove( $temp );
-

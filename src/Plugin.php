@@ -51,12 +51,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$prefix         = '';
 
 		$config   = [
-			'folder'       => $this->path( getcwd(), 'vendor-prefixed' ),
+			'folder'       => $this->path( getcwd(), 'vendor-scoped' ),
 			'temp'         => $this->path( getcwd(), 'tmp-' . substr( str_shuffle( md5( microtime() ) ), 0, 10 ) ),
 			'prefix'       => $prefix,
 			'globals'      => [ 'wordpress', 'woocommerce', 'action-scheduler' ],
-			'composerjson' => 'composer-prefixed.json',
-			'composerlock' => 'composer-prefixed.lock',
+			'composerjson' => 'composer-scoped.json',
+			'composerlock' => 'composer-scoped.lock',
 		];
 
 		if ( ! empty( $extra['aviary']['folder'] ) ) {
@@ -156,7 +156,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$postInstall     = str_replace( '%%destination%%', $destination, $postInstall );
 		$postInstall     = str_replace( '%%cwd%%', getcwd(), $postInstall );
 		$postInstall     = str_replace( '%%composer_lock%%', $this->composerLockFile, $postInstall );
-		$postInstall     = str_replace( '%%vendor_prefixed%%', $this->folder, $postInstall );
+		$postInstall     = str_replace( '%%vendor_scoped%%', $this->folder, $postInstall );
 		$postInstall     = str_replace( '%%temp%%', $this->tempDir, $postInstall );
 		$postInstall     = str_replace( '%%prefix%%', $this->prefix, $postInstall );
 		$postInstallPath = $this->path( $this->tempDir, 'postinstall.php' );

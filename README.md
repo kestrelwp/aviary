@@ -57,13 +57,13 @@ composer global update kestrelwp/aviary
 ## Usage
 
 1. This composer plugin is meant to be installed globally, to avoid PHP & dependency version conflicts between this tool and your plugin dependencies.
-2. The configuration requires creating `composer-prefixed.json` file, that has exactly same structure like `composer.json`
+2. The configuration requires creating `composer-scoped.json` file, that has exactly same structure like `composer.json`
    file, but serves only for scoped dependencies. Dependencies that you don't want to scope comes to `composer.json`.
 3. Add `extra.aviary.prefix` to you `composer.json`, where you can specify the namespace, where your dependencies
    will be in. All other config options (`folder`, `globals`, `composerjson`, `composerlock`, `autorun`) are optional.
-4. After each `composer install` or `composer update`, all the dependencies specified in `composer-prefixed.json` will be
+4. After each `composer install` or `composer update`, all the dependencies specified in `composer-scoped.json` will be
    scoped for you.
-5. Add a `config.platform` option in your `composer.json` and `composer-prefixed.json`. This settings will make sure that the
+5. Add a `config.platform` option in your `composer.json` and `composer-scoped.json`. This settings will make sure that the
    dependencies will be installed with the correct PHP version.
 
 **Example of `composer.json` with its default values**
@@ -81,13 +81,13 @@ composer global update kestrelwp/aviary
   "extra": {
     "aviary": {
       "prefix": "MyPrefixForDependencies",
-      "folder": "vendor-prefixed",
+      "folder": "vendor-scoped",
       "globals": [
         "wordpress",
         "woocommerce"
       ],
-      "composerjson": "composer-prefixed.json",
-      "composerlock": "composer-prefixed.lock",
+      "composerjson": "composer-scoped.json",
+      "composerlock": "composer-scoped.lock",
       "autorun": true
     }
   }
@@ -96,10 +96,10 @@ composer global update kestrelwp/aviary
 
 6. Option `autorun` defaults to `true` so that scoping is run automatically upon composer `update` or `install` command.
    That is not what you want in all cases, so you can set it `false` if you need.
-   To start prefixing manually, you need to add for example the line `"aviary": "aviary"` to the `"scripts"` section of your `composer.json`. 
+   To start prefixing manually, you need to add for example the line `"aviary": "aviary"` to the `"scripts"` section of your `composer.json`.
    You then run the script with the command `composer aviary install` or `composer aviary update`.
 
-7. Scoped dependencies will be in `vendor-prefixed` folder of your project. There's no need to include multiple autoloaders - `aviary` provides a single `aviary-autload.php` file which loads all the required autoload files for both prefixed and non-prefixed dependencies.
+7. Scoped dependencies will be in `vendor-scoped` folder of your project. There's no need to include multiple autoloaders - `aviary` provides a single `aviary-autoload.php` file which loads all the required autoload files for both prefixed and non-prefixed dependencies.
 
 8. After that, you can simply use dependencies with the prefixed namespace in your code.
 
@@ -107,7 +107,7 @@ composer global update kestrelwp/aviary
 
 ```php
 <?php
-require_once __DIR__ . '/vendor-prefixed/aviary-autoload.php';
+require_once __DIR__ . '/vendor-scoped/aviary-autoload.php';
 
 new \MyPrefixForDependencies\Example\Dependency();
 ```
@@ -124,7 +124,7 @@ composer:
   image: composer:2
   artifacts:
     paths:
-      - $CI_PROJECT_DIR/vendor-prefixed
+      - $CI_PROJECT_DIR/vendor-scoped
       - $CI_PROJECT_DIR/vendor
     expire_in: 1 week
   script:
@@ -171,7 +171,7 @@ jobs:
         with:
           name: vendor
           path: |
-            vendor-prefixed/
+            vendor-scoped/
             vendor/
 ```
 
@@ -193,10 +193,10 @@ function customize_php_scoper_config( array $config ): array {
         if ( strpos( $filePath, 'guzzlehttp/guzzle/src/Handler/CurlFactory.php' ) !== false ) {
             $content = str_replace( 'stream_for($sink)', 'Utils::streamFor()', $content );
         }
-        
+
         return $content;
     };
-    
+
     return $config;
 }
 ```
