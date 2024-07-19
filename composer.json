@@ -34,7 +34,6 @@
     "kestrelwp/php-scoper-phar": "^0.18.14"
   },
   "require-dev": {
-    "jetbrains/phpstorm-stubs": "^v2024.1",
     "johnpbloch/wordpress": "^6.6.0",
     "nikic/php-parser": "^v4.19.1",
     "woocommerce/action-scheduler": "^3.8.1",
