@@ -12,7 +12,9 @@
     "bin/aviary"
   ],
   "scripts": {
-    "extract": "php ./scripts/extract-symbols.php"
+    "extract": "php ./scripts/extract-symbols.php",
+    "pre-update-cmd": "cp composer.lock composer.lock.bak",
+    "post-update-cmd": "php ./scripts/extract-updated-symbols.php"
   },
   "minimum-stability": "stable",
   "repositories": [
