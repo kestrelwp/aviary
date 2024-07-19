@@ -19,13 +19,17 @@
     {
       "type": "composer",
       "url": "https://wpackagist.org"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:kestrelwp/php-scoper-phar.git"
     }
   ],
   "require": {
     "php": "^8.2",
     "composer-plugin-api": "^2.3",
     "composer/composer": "^2.7.6",
-    "wpify/php-scoper": "^0.18.11"
+    "kestrelwp/php-scoper-phar": "^0.18.14"
   },
   "require-dev": {
     "jetbrains/phpstorm-stubs": "^v2024.1",
