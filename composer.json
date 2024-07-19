@@ -36,7 +36,6 @@
   "require-dev": {
     "johnpbloch/wordpress": "^6.6.0",
     "nikic/php-parser": "^v4.19.1",
-    "woocommerce/action-scheduler": "^3.8.1",
     "wpackagist-plugin/woocommerce": "^9.1.2"
   },
   "extra": {
