@@ -48,8 +48,7 @@ Aviary uses PHP Scoper under the hood, but it solves the above problems:
 
 ## Installation
 
-Until/if we can package this, and until we tag a release, you will
-need to edit your project `composer.json` as follows:
+Until/if we tag a release, you will need to edit your project `composer.json` as follows:
 
 ```json
 {
@@ -61,12 +60,6 @@ need to edit your project `composer.json` as follows:
          "kestrelwp/aviary": true
       }
    },
-   "repositories": [
-      {
-         "type": "vcs",
-         "url": "git@github.com:kestrelwp/aviary.git"
-      }
-   ]
 }
 ```
 
