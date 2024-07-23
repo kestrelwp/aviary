@@ -11,4 +11,5 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "johnpbloch/wordpress"
-      - dependency-name: "wpackagist-plugin/woocommerce"    
+      - dependency-name: "wpackagist-plugin/woocommerce"
+      - dependency-name: "kestrelwp/php-scoper-phar"
