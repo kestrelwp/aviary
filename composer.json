@@ -1,6 +1,6 @@
 {
   "name": "kestrelwp/aviary",
-  "description": "Composer plugin that scopes WordPress and WooCommerce dependencies for usage in WordPress plugins and themes.",
+  "description": "A Composer plugin for isolating dependencies for WordPress plugins and themes.",
   "type": "composer-plugin",
   "autoload": {
     "psr-4": {
