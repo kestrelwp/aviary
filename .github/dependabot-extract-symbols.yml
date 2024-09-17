@@ -8,8 +8,8 @@ permissions:
   contents: write
 
 jobs:
-  auto-extract:
     if: ${{ github.actor == 'dependabot[bot]' }}
+  extract-symbols:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,14 +24,12 @@ jobs:
         run: composer install --no-interaction --no-progress
       - name: Run extract script
         run: composer run-script extract
-      - name: Commit changes
+      - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config --local user.email "${{ github.actor }}@users.noreply.github.com"
+          git config --local user.name "${{ github.actor }}"
           git add -A
-          git diff-index --quiet HEAD || git commit -m "Extract symbols after Dependabot update"
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.head_ref }}
+          git commit -m "Extract symbols after Dependabot update"
+          git push
