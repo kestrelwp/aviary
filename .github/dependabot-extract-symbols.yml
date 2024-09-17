@@ -1,0 +1,33 @@
+name: Extract symbols on dependabot updates
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  auto-extract:
+    if: ${{ github.actor == 'dependabot[bot]' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --no-progress
+      - name: Run extract script
+        run: composer run-script extract
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add -A
+          git diff-index --quiet HEAD || git commit -m "Extract symbols after Dependabot update"
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.head_ref }}
