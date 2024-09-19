@@ -20,7 +20,7 @@ final class DocblockPatcher implements Patcher
 	public function __invoke(string $filePath, string $prefix, string $contents): string
 	{
 		// look for @param, @return, @var, and @throws annotations
-		$pattern = '/@(?:param|return|var|throws)\s+\\\\([a-zA-Z_][\w\\\\]*)/';
+		$pattern = '/@(?:param|return|var|throws)\s+(?:class-string<\\\\([a-zA-Z_][\w\\\\]*)>|\\\\([a-zA-Z_][\w\\\\]*))/';
 
 		return preg_replace_callback($pattern, function ($matches) use ($prefix) {
 			$symbol = $matches[1];
