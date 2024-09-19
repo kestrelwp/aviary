@@ -305,7 +305,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 		if ($package) {
 			$installPath = $installationManager->getInstallPath($package);
-			return $installPath . '/vendor/bin/' . $binaryName;
+			return $installPath . '/bin/' . $binaryName;
 		}
 
 		throw new RuntimeException("Package $packageName not found.");
