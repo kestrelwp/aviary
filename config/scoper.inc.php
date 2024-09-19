@@ -4,6 +4,7 @@
  */
 
 use Isolated\Symfony\Component\Finder\Finder;
+use Kestrel\Aviary\Patcher\DocblockPatcher;
 
 $config = require_once __DIR__ . '/aviary.config.php';
 $project_customizations = __DIR__ . '/aviary.custom.php';
@@ -81,6 +82,7 @@ return customize_php_scoper_config( array_merge( $config, [
 
 			return str_replace( $searches, $replacements, $content, $count );
 		},
+		new DocblockPatcher( $config ),
 	],
 	'expose-global-constants' => false,
 	'expose-global-classes'   => false,
