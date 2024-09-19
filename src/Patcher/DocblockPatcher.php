@@ -19,24 +19,33 @@ final class DocblockPatcher implements Patcher
 
 	public function __invoke(string $filePath, string $prefix, string $contents): string
 	{
-		// look for @param, @return, @var, and @throws annotations
-		$pattern = '/@(?:param|return|var|throws)\s+(?:class-string<\\\\([a-zA-Z_][\w\\\\]*)>|\\\\([a-zA-Z_][\w\\\\]*))/';
+		// Pattern for @param, @return, @var, @see, and @throws annotations
+		$pattern1 = '/@(?:param|return|var|throws|see)\s+\\\\([a-zA-Z_][\w\\\\]*)/';
 
-		return preg_replace_callback($pattern, function ($matches) use ($prefix) {
-			$symbol = $matches[1];
+		// Pattern for class-string<> instances
+		$pattern2 = '/class-string<\\\\([a-zA-Z_][\w\\\\]*)>/';
 
-			// Ignore if the symbol is already prefixed
-			if (str_starts_with($symbol, $prefix . '\\')) {
-				return $matches[0];
-			}
+		$contents = preg_replace_callback($pattern1, fn($matches) => $this->replaceCallback($matches, $prefix), $contents);
+		$contents = preg_replace_callback($pattern2, fn($matches) => $this->replaceCallback($matches, $prefix), $contents);
 
-			// Ignore if the symbol is in the exclude list or is internal
-			if ($this->isExcludedOrInternal($symbol)) {
-				return $matches[0];
-			}
+		return $contents;
+	}
 
-			return str_replace($symbol, $prefix . '\\' . $symbol, $matches[0]);
-		}, $contents);
+	protected function replaceCallback(array $matches, string $prefix): string
+	{
+		$symbol = $matches[1];
+
+		// Ignore if the symbol is already prefixed
+		if (str_starts_with($symbol, $prefix . '\\')) {
+			return $matches[0];
+		}
+
+		// Ignore if the symbol is in the exclude list or is internal
+		if ($this->isExcludedOrInternal($symbol)) {
+			return $matches[0];
+		}
+
+		return str_replace($symbol, $prefix . '\\' . $symbol, $matches[0]);
 	}
 
 	/**
