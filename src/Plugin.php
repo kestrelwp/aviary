@@ -173,7 +173,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$scriptName = ScriptEvents::POST_INSTALL_CMD;
 		}
 
-		$phpScoperPath = realpath( __DIR__ . '/../../../kestrelwp/php-scoper-phar/bin/php-scoper.phar' );
+		$phpScoperPath = realpath(__DIR__ . '/../vendor/bin/php-scoper');
 
 		$composerJson->scripts->{$scriptName} = [
 			$phpScoperPath . ' add-prefix --output-dir="' . $destination . '" --force --config="' . $phpScoperConfig . '"',
