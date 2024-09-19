@@ -50,14 +50,16 @@ function resolve( Node $node ): array {
 			['exclude-classes' => [$node->name->name]],
 
 		$node instanceof Node\Stmt\Function_ =>
-			['exclude-functions' => [$node->name->name]],
+			resolve_function_node($node),
 
 		$node instanceof Node\Stmt\If_ =>
 			resolve_if_node($node),
 
 		$node instanceof Node\Stmt\Expression &&
 		$node->expr instanceof Node\Expr\FuncCall &&
-		in_array('define', $node->expr->name->getParts()) =>
+		$node->expr->name instanceof Node\Name &&
+		in_array('define', $node->expr->name->getParts()) &&
+		$node->expr->args[0]->value instanceof Node\Scalar\String_ =>
 			['exclude-constants' => [$node->expr->args[0]->value->value]],
 
 		$node instanceof Node\Stmt\Const_ =>
@@ -65,6 +67,18 @@ function resolve( Node $node ): array {
 
 		default => []
 	};
+}
+
+function resolve_function_node(Node\Stmt\Function_ $node): array {
+	$symbols = ['exclude-functions' => [$node->name->name]];
+
+	foreach ($node->stmts as $subNode) {
+		foreach (resolve($subNode) as $key => $result) {
+			$symbols[$key] = array_merge($symbols[$key] ?? [], $result);
+		}
+	}
+
+	return $symbols;
 }
 
 function resolve_if_node( Node\Stmt\If_ $node ): array {
