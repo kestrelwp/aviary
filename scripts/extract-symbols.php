@@ -10,7 +10,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 function get_parser(): Parser {
 	static $parser;
 
-	return $parser ??= ( new ParserFactory )->create( ParserFactory::PREFER_PHP7 );
+	return $parser ??= ( new ParserFactory )->createForNewestSupportedVersion();
 }
 
 function resolve( Node $node ): array {

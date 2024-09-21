@@ -7,6 +7,11 @@
       "Kestrel\\Aviary\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Kestrel\\Aviary\\Tests\\": "tests/"
+    }
+  },
   "license": "GPL-2.0-or-later",
   "bin": [
     "bin/aviary"
@@ -27,11 +32,11 @@
     "php": "^8.2",
     "composer-plugin-api": "^2.3",
     "composer/composer": "^2.7.6",
-    "kestrelwp/php-scoper-phar": "^0.18.14"
+    "humbug/php-scoper": "^0.18.15"
   },
   "require-dev": {
+    "phpunit/phpunit": "^11.3.5",
     "johnpbloch/wordpress": "^6.6.0",
-    "nikic/php-parser": "^v4.19.1",
     "wpackagist-plugin/woocommerce": "^9.1.2"
   },
   "extra": {

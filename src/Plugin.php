@@ -10,6 +10,7 @@ use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -173,7 +174,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$scriptName = ScriptEvents::POST_INSTALL_CMD;
 		}
 
-		$phpScoperPath = realpath( __DIR__ . '/../../../kestrelwp/php-scoper-phar/bin/php-scoper.phar' );
+		$phpScoperPath = $this->getBinPath('humbug/php-scoper', 'php-scoper');
 
 		$composerJson->scripts->{$scriptName} = [
 			$phpScoperPath . ' add-prefix --output-dir="' . $destination . '" --force --config="' . $phpScoperConfig . '"',
@@ -295,5 +296,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			),
 			$output,
 		);
+	}
+
+	protected function getBinPath(string $packageName, string $binaryName): string {
+
+		$installationManager = $this->composer->getInstallationManager();
+		$package = $this->composer->getRepositoryManager()->getLocalRepository()->findPackage($packageName, '*');
+
+		if ($package) {
+			$installPath = $installationManager->getInstallPath($package);
+			return $installPath . '/bin/' . $binaryName;
+		}
+
+		throw new RuntimeException("Package $packageName not found.");
 	}
 }
