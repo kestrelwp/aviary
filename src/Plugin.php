@@ -10,6 +10,7 @@ use Composer\Plugin\Capability\CommandProvider;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
+use Exception;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -113,14 +114,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 	public function execute( Event $event ): void {
 
-		$extra = $event->getComposer()->getPackage()->getExtra();
-
 		// skip on install/update if autorun is disabled
-		if (
-			isset( $extra['aviary']['autorun'] ) &&
-			$extra['aviary']['autorun'] === false &&
-			( $event->getName() === ScriptEvents::POST_UPDATE_CMD || $event->getName() === ScriptEvents::POST_INSTALL_CMD )
-		) {
+		if ( $this->isAutorunDisabled($event) && $this->isPostInstallOrUpdateEvent($event) ) {
 			return;
 		}
 
@@ -129,8 +124,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			return;
 		}
 
-		$source           = $this->path( $this->tempDir, 'source' );
-		$destination      = $this->path( $this->tempDir, 'destination' );
+		// temp dir for installing unscoped dependencies
+		$source      = $this->path( $this->tempDir, 'source' );
+		// destination dir for outputting scoped dependencies (php-scoper output-dir & working-dir)
+		$destination = $this->path( $this->tempDir, 'destination' );
+
 		$phpScoperConfig  = $this->createPhpScoperConfig( $this->tempDir, $source, $destination );
 		$composerJsonPath = $this->path( $source, 'composer.json' );
 		$composerLockPath = $this->path( $source, 'composer.lock' );
@@ -207,7 +205,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$this->runInstall( $source, $command, $useDevDependencies );
 	}
 
-	private function createPhpScoperConfig( string $path, string $source, string $destination ) {
+	private function createPhpScoperConfig( string $path, string $source, string $destination ): array|string
+	{
 
 		$inc_path    = $this->createPath( [ 'config', 'scoper.inc.php' ] );
 		$config_path = $this->createPath( [ 'config', 'aviary.config.php' ] );
@@ -218,7 +217,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$this->createFolder( $path );
 		$this->createFolder( $source );
 		$this->createFolder( $destination );
-
 
 		$config = [
 			'prefix'            => $this->prefix,
@@ -277,7 +275,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		file_put_contents( $path, $json );
 	}
 
-	private function runInstall( string $path, string $command = 'install', bool $useDevDependencies = true ): int {
+	/**
+	 * @throws Exception
+	 */
+	private function runInstall(string $path, string $command = 'install', bool $useDevDependencies = true ): int {
 
 		$output      = new ConsoleOutput();
 		$application = new Application();
@@ -295,16 +296,38 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		);
 	}
 
-	protected function getBinPath(string $packageName, string $binaryName): string {
+	protected function getBinPath( string $packageName, string $binaryName ): string {
 
 		$installationManager = $this->composer->getInstallationManager();
 		$package = $this->composer->getRepositoryManager()->getLocalRepository()->findPackage($packageName, '*');
 
-		if ($package) {
+		if ( $package ) {
 			$installPath = $installationManager->getInstallPath($package);
 			return $installPath . '/bin/' . $binaryName;
 		}
 
 		throw new RuntimeException("Package $packageName not found.");
+	}
+
+	/**
+	 * Checks if autorun is disabled in composer config.
+	 *
+	 * @param Event $event
+	 * @return bool
+	 */
+	protected function isAutorunDisabled( Event $event ): bool
+	{
+		$extra = $event->getComposer()->getPackage()->getExtra();
+
+		return isset( $extra['aviary']['autorun'] ) && $extra['aviary']['autorun'] === false;
+	}
+
+	/**
+	 * @param Event $event
+	 * @return bool
+	 */
+	protected function isPostInstallOrUpdateEvent( Event $event ): bool
+	{
+		return ( $event->getName() === ScriptEvents::POST_UPDATE_CMD || $event->getName() === ScriptEvents::POST_INSTALL_CMD );
 	}
 }
