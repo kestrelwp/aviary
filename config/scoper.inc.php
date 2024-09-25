@@ -1,17 +1,26 @@
 <?php declare( strict_types=1 );
 /**
  * This is the configuration file for PHP-Scoper.
+ *
+ * @link https://github.com/humbug/php-scoper/blob/main/docs/configuration.md
  */
-
 use Isolated\Symfony\Component\Finder\Finder;
 use Kestrel\Aviary\Patcher\DocblockPatcher;
 
-// load the base configuration
-$config = require_once __DIR__ . '/aviary.config.php';
+/**
+ * Load the base configuration
+ *
+ * This file is generated at runtime by @see \Kestrel\Aviary\Plugin::createPhpScoperConfig()
+ */
+$config = require_once realpath( __DIR__ . '/aviary.config.php' );
+
+if ( ! $config ) {
+	throw new RuntimeException( 'Could not load Aviary base configuration' );
+}
 
 // load project customizations - this script runs inside a tmp directory of the project root,
 // so we need to go up two levels to get to the project root
-if ( $project_customizations = realpath(__DIR__ . '/../aviary.custom.php') ) {
+if ( $project_customizations = realpath( __DIR__ . '/../aviary.custom.php' ) ) {
 	require_once $project_customizations;
 }
 
@@ -23,9 +32,7 @@ if ( ! function_exists( 'customize_php_scoper_config' ) ) {
 	}
 }
 
-$prefix      = $config['prefix'];
-$source      = $config['source'];
-$destination = $config['destination'];
+$source = $config['source'];
 
 // remove source and destination from the config, as they're not part of php-scoper config
 unset( $config['source'], $config['destination'] );

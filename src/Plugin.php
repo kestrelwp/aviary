@@ -219,16 +219,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$this->createFolder( $source );
 		$this->createFolder( $destination );
 
-		$config = require_once $config_path;
 
-		if ( ! is_array( $config ) ) {
-			exit;
-		}
-
-		$config['prefix']            = $this->prefix;
-		$config['source']            = $source;
-		$config['destination']       = $destination;
-		$config['exclude-constants'] = [ 'NULL', 'TRUE', 'FALSE' ];
+		$config = [
+			'prefix'            => $this->prefix,
+			'source'            => $source,
+			'destination'       => $destination,
+			'exclude-constants' => [ 'NULL', 'TRUE', 'FALSE' ],
+		];
 
 		if ( in_array( 'wordpress', $this->globals ) ) {
 			$config = array_merge_recursive(
